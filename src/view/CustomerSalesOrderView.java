@@ -29,6 +29,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -48,6 +49,7 @@ public class CustomerSalesOrderView {
 	private JTextField emailInput;
 	private JTable customersTable;
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private Queue<Customer> sortedCustomers;
 
 	/**
 	 * Launch the application.
@@ -178,9 +180,11 @@ public class CustomerSalesOrderView {
 		
 		JRadioButton ascendingButton = new JRadioButton("Ascending");
 		
+		
 		JRadioButton descendingButton = new JRadioButton("Descending");
 		
 		JButton sortByButton = new JButton("SORT");
+		
 		
 		JButton returnHomeButton = new JButton("RETURN HOME");
 		
@@ -397,7 +401,31 @@ public class CustomerSalesOrderView {
 				}
 			}
 		});
+		
+		ascendingButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				descendingButton.setSelected(false);
+			}
+		});
+		
+		descendingButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ascendingButton.setSelected(false);
+			}
+		});
+		
+		sortByButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(customersSortByComboBox.getSelectedIndex() == 1 || customersSortByComboBox.getSelectedIndex() == 2 || customersSortByComboBox.getSelectedIndex() == 4) {
+					sortedCustomers.clear();
+					String sortBy = customersSortByComboBox.getSelectedItem() + "";
+					//alphabeticalAscendingSelectionSort(customerList, sortBy);
+				}
+			}
+		});
+		
 		//
+		
 	}
 	
 		 public void clear() {
@@ -406,5 +434,39 @@ public class CustomerSalesOrderView {
 			phoneNumberInput.setText("");
 			emailInput.setText("");
 		}
+		 
+//		 public static void alphabeticalAscendingSelectionSort(ArrayList<Customer> list, String sortBy) {
+//				//long startTime = System.currentTimeMillis();
+//			 
+//			 	//make ascending or descending a parameter to reduce methods
+//			 	String value;
+//			 	String minValue;
+//			 
+//			 	if(sortBy.equals("First Name")) {
+//			 		
+//			 	}else if(sortBy.equals("Last Name")) {
+//			 	
+//			 	}else {
+//			 		
+//			 	}
+//			 
+//				int n = list.size();
+//				for(int i=0; i<n-1; i++) {
+//					int min = i;
+//					for(int j=i+1; j<n; j++) {
+//						if(list.get(j) < list.get(min)) {
+//							min = j;
+//						}
+//					}
+//					if(min != i) {
+//						int temp = list.get(min);
+//						list.set(min, list.get(i));
+//						list.set(i, temp);
+//					}
+//				}
+//				
+//				//long endTime = System.currentTimeMillis();
+//				//executionTime = endTime-startTime;
+//			}
 		
 }
