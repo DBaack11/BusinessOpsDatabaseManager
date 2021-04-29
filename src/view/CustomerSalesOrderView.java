@@ -171,7 +171,7 @@ public class CustomerSalesOrderView {
 		
 		customerClearButton.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		
-		JScrollPane customerScrollPane = new JScrollPane();
+		JScrollPane scrollPane = new JScrollPane();
 		
 		
 		JLabel sortByLabel = new JLabel("Sort By:");
@@ -238,7 +238,7 @@ public class CustomerSalesOrderView {
 								.addGroup(gl_customers.createParallelGroup(Alignment.LEADING)
 									.addComponent(customerClearButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
 									.addComponent(customerUpdateButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)))
-							.addComponent(customerScrollPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(scrollPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_customers.setVerticalGroup(
@@ -281,7 +281,7 @@ public class CustomerSalesOrderView {
 						.addComponent(customerDescendingButton)
 						.addComponent(customerSortByButton))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(customerScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(customerReturnHomeButton)
 					.addContainerGap())
@@ -290,7 +290,7 @@ public class CustomerSalesOrderView {
 		customersTable = new JTable();
 		customersTable.setGridColor(Color.BLACK);
 		customersTable.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		customerScrollPane.setViewportView(customersTable);
+		scrollPane.setViewportView(customersTable);
 		customers.setLayout(gl_customers);
 		
 		DefaultTableModel customersModel = new DefaultTableModel();
@@ -337,9 +337,19 @@ public class CustomerSalesOrderView {
 				String lastName = lastNameInput.getText().trim();
 				String phoneNumber = phoneNumberInput.getText().trim();
 				String email = emailInput.getText().trim();
+				boolean numerical = true;
+				
+				try {
+					Integer.parseInt(phoneNumber);
+				} catch (NumberFormatException exception) {
+					numerical = false;
+				}
 				
 				if(firstName.equals("") || lastName.equals("") || phoneNumber.equals("") || email.equals("")) {
 					JOptionPane.showMessageDialog(null, "Please Complete All Fields");
+					
+				}else if(!numerical) {
+					JOptionPane.showMessageDialog(null, "Please Enter All Digit Phone Number");
 				}else {
 					row[0] = firstName;
 					row[1] = lastName;
@@ -367,7 +377,7 @@ public class CustomerSalesOrderView {
 				String email = emailInput.getText().trim();
 				int row = customersTable.getSelectedRow();
 				
-				if(row>0) {
+				if(row>=0) {
 					customersModel.setValueAt(firstName, row, 0);
 					customersModel.setValueAt(lastName, row, 1);
 					customersModel.setValueAt(phoneNumber, row, 2);
@@ -394,9 +404,10 @@ public class CustomerSalesOrderView {
 			public void actionPerformed(ActionEvent e) {
 				int row = customersTable.getSelectedRow();
 				
-				if(row>0) {
+				if(row>=0) {
 					customersModel.removeRow(row);
 					JOptionPane.showMessageDialog(null, "Data Successfully Deleted");
+					clear();
 				}else {
 					JOptionPane.showMessageDialog(null, "Please Select A Row");
 				}
@@ -464,6 +475,7 @@ public class CustomerSalesOrderView {
 		 public static void customerSelectionSort(ArrayList<Customer> list, String sortBy, boolean numerical) {
 				//long startTime = System.currentTimeMillis();
 			 
+			 	
 			 	String value = "";
 			 	String minValue = "";
 		
@@ -499,7 +511,7 @@ public class CustomerSalesOrderView {
 							
 						}else {
 						
-							if(value.compareTo(minValue) < 0) {
+							if(value.compareToIgnoreCase(minValue) < 0) {
 								min = j;
 							}
 						}
