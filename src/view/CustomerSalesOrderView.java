@@ -171,7 +171,7 @@ public class CustomerSalesOrderView {
 		
 		customerClearButton.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		
-		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane customerScrollPane = new JScrollPane();
 		
 		
 		JLabel sortByLabel = new JLabel("Sort By:");
@@ -238,7 +238,7 @@ public class CustomerSalesOrderView {
 								.addGroup(gl_customers.createParallelGroup(Alignment.LEADING)
 									.addComponent(customerClearButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
 									.addComponent(customerUpdateButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)))
-							.addComponent(scrollPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(customerScrollPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_customers.setVerticalGroup(
@@ -281,7 +281,7 @@ public class CustomerSalesOrderView {
 						.addComponent(customerDescendingButton)
 						.addComponent(customerSortByButton))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+					.addComponent(customerScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(customerReturnHomeButton)
 					.addContainerGap())
@@ -290,7 +290,7 @@ public class CustomerSalesOrderView {
 		customersTable = new JTable();
 		customersTable.setGridColor(Color.BLACK);
 		customersTable.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		scrollPane.setViewportView(customersTable);
+		customerScrollPane.setViewportView(customersTable);
 		customers.setLayout(gl_customers);
 		
 		DefaultTableModel customersModel = new DefaultTableModel();
