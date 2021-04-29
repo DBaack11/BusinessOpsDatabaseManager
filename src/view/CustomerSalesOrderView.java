@@ -29,7 +29,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -49,7 +51,6 @@ public class CustomerSalesOrderView {
 	private JTextField emailInput;
 	private JTable customersTable;
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
-	private Queue<Customer> sortedCustomers;
 
 	/**
 	 * Launch the application.
@@ -178,17 +179,17 @@ public class CustomerSalesOrderView {
 		JComboBox customersSortByComboBox = new JComboBox();
 		customersSortByComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "First Name", "Last Name", "Phone Number", "Email"}));
 		
-		JRadioButton ascendingButton = new JRadioButton("Ascending");
+		JRadioButton customerAscendingButton = new JRadioButton("Ascending");
 		
 		
-		JRadioButton descendingButton = new JRadioButton("Descending");
+		JRadioButton customerDescendingButton = new JRadioButton("Descending");
 		
-		JButton sortByButton = new JButton("SORT");
+		JButton customerSortByButton = new JButton("SORT");
 		
 		
-		JButton returnHomeButton = new JButton("RETURN HOME");
+		JButton customerReturnHomeButton = new JButton("RETURN HOME");
 		
-		returnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		customerReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		GroupLayout gl_customers = new GroupLayout(customers);
 		gl_customers.setHorizontalGroup(
 			gl_customers.createParallelGroup(Alignment.LEADING)
@@ -200,15 +201,15 @@ public class CustomerSalesOrderView {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(customersSortByComboBox, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(ascendingButton)
+							.addComponent(customerAscendingButton)
 							.addGap(2)
-							.addComponent(descendingButton, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+							.addComponent(customerDescendingButton, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(sortByButton, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+							.addComponent(customerSortByButton, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
 							.addGap(103))
 						.addGroup(gl_customers.createSequentialGroup()
 							.addGap(233)
-							.addComponent(returnHomeButton)
+							.addComponent(customerReturnHomeButton)
 							.addPreferredGap(ComponentPlacement.RELATED, 219, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_customers.createSequentialGroup()
 							.addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
@@ -276,13 +277,13 @@ public class CustomerSalesOrderView {
 					.addGroup(gl_customers.createParallelGroup(Alignment.BASELINE)
 						.addComponent(customersSortByComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(sortByLabel)
-						.addComponent(ascendingButton)
-						.addComponent(descendingButton)
-						.addComponent(sortByButton))
+						.addComponent(customerAscendingButton)
+						.addComponent(customerDescendingButton)
+						.addComponent(customerSortByButton))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(returnHomeButton)
+					.addComponent(customerReturnHomeButton)
 					.addContainerGap())
 		);
 		
@@ -312,7 +313,7 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
-		returnHomeButton.addActionListener(new ActionListener() {
+		customerReturnHomeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customers.setVisible(false);
 				home.setVisible(true);
@@ -369,8 +370,8 @@ public class CustomerSalesOrderView {
 				if(row>0) {
 					customersModel.setValueAt(firstName, row, 0);
 					customersModel.setValueAt(lastName, row, 1);
-				customersModel.setValueAt(phoneNumber, row, 2);
-				customersModel.setValueAt(email, row, 3);
+					customersModel.setValueAt(phoneNumber, row, 2);
+					customersModel.setValueAt(email, row, 3);
 				
 				JOptionPane.showMessageDialog(null, "Data Successfully Updated");
 				
@@ -402,24 +403,49 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
-		ascendingButton.addActionListener(new ActionListener() {
+		customerAscendingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				descendingButton.setSelected(false);
+				customerDescendingButton.setSelected(false);
 			}
 		});
 		
-		descendingButton.addActionListener(new ActionListener() {
+		customerDescendingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ascendingButton.setSelected(false);
+				customerAscendingButton.setSelected(false);
 			}
 		});
 		
-		sortByButton.addActionListener(new ActionListener() {
+		customerSortByButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(customersSortByComboBox.getSelectedIndex() == 1 || customersSortByComboBox.getSelectedIndex() == 2 || customersSortByComboBox.getSelectedIndex() == 4) {
-					sortedCustomers.clear();
-					String sortBy = customersSortByComboBox.getSelectedItem() + "";
-					//alphabeticalAscendingSelectionSort(customerList, sortBy);
+					
+				if(customersSortByComboBox.getSelectedIndex()>0 && (customerAscendingButton.isSelected() || customerDescendingButton.isSelected())) {
+	
+						String sortBy = customersSortByComboBox.getSelectedItem() + "";
+						boolean numerical = false;
+						
+						if(sortBy.equals("Phone Number")) {
+							numerical = true;
+						}
+						
+						customerSelectionSort(customerList, sortBy, numerical);
+						
+						if(customerDescendingButton.isSelected()) {
+							reverse(customerList);
+						}
+						
+						int rowCount = customersModel.getRowCount();
+						
+						for(int i = 0; i < rowCount; i++) {
+							Customer customer = customerList.get(i);
+							customersModel.setValueAt(customer.getFirstName(), i, 0);
+							customersModel.setValueAt(customer.getlastName(), i, 1);
+							customersModel.setValueAt(customer.getPhoneNum(), i, 2);
+							customersModel.setValueAt(customer.getEmail(), i, 3);
+						}
+							
+				
+				} else {
+					JOptionPane.showMessageDialog(null, "Please Select A Sorting Category and Order");
 				}
 			}
 		});
@@ -435,38 +461,74 @@ public class CustomerSalesOrderView {
 			emailInput.setText("");
 		}
 		 
-//		 public static void alphabeticalAscendingSelectionSort(ArrayList<Customer> list, String sortBy) {
-//				//long startTime = System.currentTimeMillis();
-//			 
-//			 	//make ascending or descending a parameter to reduce methods
-//			 	String value;
-//			 	String minValue;
-//			 
-//			 	if(sortBy.equals("First Name")) {
-//			 		
-//			 	}else if(sortBy.equals("Last Name")) {
-//			 	
-//			 	}else {
-//			 		
-//			 	}
-//			 
-//				int n = list.size();
-//				for(int i=0; i<n-1; i++) {
-//					int min = i;
-//					for(int j=i+1; j<n; j++) {
-//						if(list.get(j) < list.get(min)) {
-//							min = j;
-//						}
-//					}
-//					if(min != i) {
-//						int temp = list.get(min);
-//						list.set(min, list.get(i));
-//						list.set(i, temp);
-//					}
-//				}
-//				
-//				//long endTime = System.currentTimeMillis();
-//				//executionTime = endTime-startTime;
-//			}
+		 public static void customerSelectionSort(ArrayList<Customer> list, String sortBy, boolean numerical) {
+				//long startTime = System.currentTimeMillis();
+			 
+			 	String value = "";
+			 	String minValue = "";
+		
+			 
+			 
+				int n = list.size();
+				for(int i=0; i<n-1; i++) {
+					int min = i;
+					for(int j=i+1; j<n; j++) {
+						
+							switch(sortBy) {
+							case "First Name": 
+								value = list.get(j).getFirstName();
+								minValue = list.get(min).getFirstName();
+								break;
+							case "Last Name":
+								value = list.get(j).getlastName();
+								minValue = list.get(min).getlastName();
+								break;
+							case "Email":
+								value = list.get(j).getEmail();
+								minValue = list.get(min).getEmail();
+								break;
+							case "Phone Number":
+								value = list.get(j).getPhoneNum();
+								minValue = list.get(min).getPhoneNum();
+							}
+						
+						if(numerical) {
+							if(Integer.parseInt(value) < (Integer.parseInt(minValue))) {
+								min = j;
+							}
+							
+						}else {
+						
+							if(value.compareTo(minValue) < 0) {
+								min = j;
+							}
+						}
+					}
+					
+					if(min != i) {
+						Customer temp = list.get(min);
+						list.set(min, list.get(i));
+						list.set(i, temp);
+						
+						
+					}
+					
+				}
+				
+				//long endTime = System.currentTimeMillis();
+				//executionTime = endTime-startTime;
+			}
+		 
+		 public void reverse(ArrayList list) {
+			 Stack<Object> stack = new Stack<Object>();
+			 while(!list.isEmpty()) {
+				 stack.add(list.get(0));
+				 list.remove(0);
+			 }
+			 while(!stack.isEmpty()) {
+				 list.add(stack.peek());
+				 stack.pop();
+			 }
+		 }
 		
 }
