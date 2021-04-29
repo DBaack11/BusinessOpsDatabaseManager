@@ -650,17 +650,49 @@ public class CustomerSalesOrderView {
 				}else {
 					JOptionPane.showMessageDialog(null, "Please Select A Row");
 				}
+			}
+		});
+		
+		productUpdateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String productID = productIDInput.getText().trim();
+				String productName = productInput.getText().trim();
+				String unitPrice = unitPriceInput.getText().trim();
+				int row = productsTable.getSelectedRow();
 				
+				if(row>=0) {
+					productsModel.setValueAt(productID, row, 0);
+					productsModel.setValueAt(productName, row, 1);
+					productsModel.setValueAt(unitPrice, row, 2);
+					
 				
+				JOptionPane.showMessageDialog(null, "Data Successfully Updated");
+				
+				clear();
+				}else {
+					JOptionPane.showMessageDialog(null, "Please Select A Row");
+				}
 			}
 		});
 	
+		/**
+		 * ActionListeners for CLEAR buttons
+		 */
 		customerClearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clear();
 			}
 		});
 		
+		productClearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clear();
+			}
+		});
+		
+		/**
+		 * ActionListeners for DELETE buttons
+		 */
 		customerDeleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = customersTable.getSelectedRow();
@@ -675,9 +707,33 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		productDeleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = productsTable.getSelectedRow();
+				
+				if(row>=0) {
+					productsModel.removeRow(row);
+					JOptionPane.showMessageDialog(null, "Data Successfully Deleted");
+					clear();
+				}else {
+					JOptionPane.showMessageDialog(null, "Please Select A Row");
+				}
+			}
+		});
+		
+		
+		/**
+		 * ActionListeners for Ascending and Descending Buttons
+		 */
 		customerAscendingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customerDescendingButton.setSelected(false);
+			}
+		});
+		
+		productAscendingButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				productDescendingButton.setSelected(false);
 			}
 		});
 		
@@ -687,6 +743,16 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		productDescendingButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				productAscendingButton.setSelected(false);
+			}
+		});
+		
+		
+		/**
+		 * ActionListeners for SORT button
+		 */
 		customerSortByButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					
@@ -722,29 +788,54 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
-		//
+		productSortByButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					
+				if(productSortByComboBox.getSelectedIndex()>0 && (productAscendingButton.isSelected() || productDescendingButton.isSelected())) {
+	
+						String sortBy = productSortByComboBox.getSelectedItem() + "";
+						boolean numerical = false;
+						
+						if(sortBy.equals("Unit Price")) {
+							numerical = true;
+						}
+						
+						productSelectionSort(productList, sortBy, numerical);
+						
+						if(productDescendingButton.isSelected()) {
+							reverse(productList);
+						}
+						
+						int rowCount = productsModel.getRowCount();
+						
+						for(int i = 0; i < rowCount; i++) {
+							Product product = productList.get(i);
+							productsModel.setValueAt(product.getProductID(), i, 0);
+							productsModel.setValueAt(product.getproductName(), i, 1);
+							productsModel.setValueAt(product.getUnitPrice(), i, 2);
+							
+						}
+							
+				
+				} else {
+					JOptionPane.showMessageDialog(null, "Please Select A Sorting Category and Order");
+				}
+			}
+		});
 		
 	}
 	
-		 public void clear() {
-			firstNameInput.setText("");
-			lastNameInput.setText("");
-			phoneNumberInput.setText("");
-			emailInput.setText("");
-			productIDInput.setText("");
-			productInput.setText("");
-			unitPriceInput.setText("");
-		}
+		// ################################################################################################################################################## 
+		// ######################################################## ADDITIONAL METHODS ###################################################################### 
+		// ################################################################################################################################################## 
+			
 		 
 		 public static void customerSelectionSort(ArrayList<Customer> list, String sortBy, boolean numerical) {
 				//long startTime = System.currentTimeMillis();
-			 
-			 	
+			
 			 	String value = "";
 			 	String minValue = "";
-		
-			 
-			 
+	
 				int n = list.size();
 				for(int i=0; i<n-1; i++) {
 					int min = i;
@@ -795,6 +886,80 @@ public class CustomerSalesOrderView {
 				//executionTime = endTime-startTime;
 			}
 		 
+		 	
+		 public static void productSelectionSort(ArrayList<Product> list, String sortBy, boolean numerical) {
+				//long startTime = System.currentTimeMillis();
+			
+			 	String value = "";
+			 	String minValue = "";
+	
+				int n = list.size();
+				for(int i=0; i<n-1; i++) {
+					int min = i;
+					for(int j=i+1; j<n; j++) {
+						
+							switch(sortBy) {
+							case "Product ID": 
+								value = list.get(j).getProductID();
+								minValue = list.get(min).getProductID();
+								break;
+							case "Product Name":
+								value = list.get(j).getproductName();
+								minValue = list.get(min).getproductName();
+								break;
+							case "Unit Price":
+								value = list.get(j).getUnitPrice() + "";
+								minValue = list.get(min).getUnitPrice() + "";
+								break;
+							}
+						
+						if(numerical) {
+							if(Double.parseDouble(value) < (Double.parseDouble(minValue))) {
+								min = j;
+							}
+							
+						}else {
+						
+							if(value.compareToIgnoreCase(minValue) < 0) {
+								min = j;
+							}
+						}
+					}
+					
+					if(min != i) {
+						Product temp = list.get(min);
+						list.set(min, list.get(i));
+						list.set(i, temp);
+						
+						
+					}
+					
+				}
+				
+				//long endTime = System.currentTimeMillis();
+				//executionTime = endTime-startTime;
+			}
+		 
+		 
+		 
+		  /**
+		   * This method clears all text fields when called upon
+		   */
+		  public void clear() {
+			 firstNameInput.setText("");
+			 lastNameInput.setText("");
+			 phoneNumberInput.setText("");
+			 emailInput.setText("");
+			 productIDInput.setText("");
+			 productInput.setText("");
+			 unitPriceInput.setText("");
+		 }
+		  
+		 /**
+		  * This method takes in an ArrayList of objects and reverses the order by adding each element 
+		  * to a stack and then popping each stack element back into the emptied list
+		  * @param list - ArrayList parameter representing the collection of objects to be reversed
+		  */
 		 public void reverse(ArrayList list) {
 			 Stack<Object> stack = new Stack<Object>();
 			 while(!list.isEmpty()) {
