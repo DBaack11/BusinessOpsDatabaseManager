@@ -50,11 +50,11 @@ public class Product {
 		this.unitPrice = unitPrice;
 	}
 
-	public String getproductName() {
+	public String getProductName() {
 		return productName;
 	}
 
-	public void setproductName(String productName) {
+	public void setProductName(String productName) {
 		this.productName = productName;
 	}
 

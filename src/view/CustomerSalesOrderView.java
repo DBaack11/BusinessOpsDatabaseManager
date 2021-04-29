@@ -323,6 +323,7 @@ public class CustomerSalesOrderView {
 		JLabel sortByLabel_1 = new JLabel("Sort By:");
 		
 		JComboBox productSortByComboBox = new JComboBox();
+		productSortByComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Product ID", "Product Name", "Unit Price"}));
 		
 		JRadioButton productAscendingButton = new JRadioButton("Ascending");
 		
@@ -638,6 +639,9 @@ public class CustomerSalesOrderView {
 				String email = emailInput.getText().trim();
 				int row = customersTable.getSelectedRow();
 				
+				Customer updatedCustomer = new Customer(firstName, lastName, phoneNumber, email);
+				customerList.set(row, updatedCustomer);
+				
 				if(row>=0) {
 					customersModel.setValueAt(firstName, row, 0);
 					customersModel.setValueAt(lastName, row, 1);
@@ -659,6 +663,9 @@ public class CustomerSalesOrderView {
 				String productName = productInput.getText().trim();
 				String unitPrice = unitPriceInput.getText().trim();
 				int row = productsTable.getSelectedRow();
+				
+				Product updatedProduct = new Product(productID, productName, Double.parseDouble(unitPrice));
+				productList.set(row, updatedProduct);
 				
 				if(row>=0) {
 					productsModel.setValueAt(productID, row, 0);
@@ -776,7 +783,7 @@ public class CustomerSalesOrderView {
 						for(int i = 0; i < rowCount; i++) {
 							Customer customer = customerList.get(i);
 							customersModel.setValueAt(customer.getFirstName(), i, 0);
-							customersModel.setValueAt(customer.getlastName(), i, 1);
+							customersModel.setValueAt(customer.getLastName(), i, 1);
 							customersModel.setValueAt(customer.getPhoneNum(), i, 2);
 							customersModel.setValueAt(customer.getEmail(), i, 3);
 						}
@@ -811,7 +818,7 @@ public class CustomerSalesOrderView {
 						for(int i = 0; i < rowCount; i++) {
 							Product product = productList.get(i);
 							productsModel.setValueAt(product.getProductID(), i, 0);
-							productsModel.setValueAt(product.getproductName(), i, 1);
+							productsModel.setValueAt(product.getProductName(), i, 1);
 							productsModel.setValueAt(product.getUnitPrice(), i, 2);
 							
 						}
@@ -847,8 +854,8 @@ public class CustomerSalesOrderView {
 								minValue = list.get(min).getFirstName();
 								break;
 							case "Last Name":
-								value = list.get(j).getlastName();
-								minValue = list.get(min).getlastName();
+								value = list.get(j).getLastName();
+								minValue = list.get(min).getLastName();
 								break;
 							case "Email":
 								value = list.get(j).getEmail();
@@ -904,8 +911,8 @@ public class CustomerSalesOrderView {
 								minValue = list.get(min).getProductID();
 								break;
 							case "Product Name":
-								value = list.get(j).getproductName();
-								minValue = list.get(min).getproductName();
+								value = list.get(j).getProductName();
+								minValue = list.get(min).getProductName();
 								break;
 							case "Unit Price":
 								value = list.get(j).getUnitPrice() + "";
