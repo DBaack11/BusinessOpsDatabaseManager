@@ -19,6 +19,12 @@ public class Product {
 		super();
 	}
 	
+	public Product(String productID, String productName, double unitPrice) {
+		this.productID = productID;
+		this.productName = productName;
+		this.unitPrice = unitPrice;
+	}
+	
 	public Product(String productID, double unitPrice, String productName, int quantity, double productTotalPrice) {
 		super();
 		this.productID = productID;

@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import model.Customer;
+import model.Product;
 
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -50,7 +51,13 @@ public class CustomerSalesOrderView {
 	private JTextField phoneNumberInput;
 	private JTextField emailInput;
 	private JTable customersTable;
+	private JTextField productInput;
+	private JTextField productIDInput;
+	private JTextField unitPriceInput;
+	private JTable productsTable;
+	
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private ArrayList<Product> productList = new ArrayList<Product>();
 
 	/**
 	 * Launch the application.
@@ -103,23 +110,27 @@ public class CustomerSalesOrderView {
 				.addGroup(gl_home.createSequentialGroup()
 					.addGap(203)
 					.addGroup(gl_home.createParallelGroup(Alignment.LEADING)
+						.addComponent(ordersButton, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE)
 						.addComponent(customersButton, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE)
-						.addComponent(productsButton, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE)
-						.addComponent(ordersButton, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE))
+						.addComponent(productsButton, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(211, Short.MAX_VALUE))
 		);
 		gl_home.setVerticalGroup(
 			gl_home.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_home.createSequentialGroup()
-					.addGap(24)
+				.addGroup(Alignment.TRAILING, gl_home.createSequentialGroup()
+					.addContainerGap(30, Short.MAX_VALUE)
 					.addComponent(ordersButton, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-					.addComponent(customersButton, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
 					.addGap(27)
+					.addComponent(customersButton, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+					.addGap(28)
 					.addComponent(productsButton, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
 					.addGap(29))
 		);
 		home.setLayout(gl_home);
+		
+		// ##################################################################################################################################################
+		// ################################################################ CUSTOMERS PANEL #################################################################
+		// ##################################################################################################################################################
 		
 		JPanel customers = new JPanel();
 		customers.setBackground(Color.GRAY);
@@ -294,22 +305,208 @@ public class CustomerSalesOrderView {
 		customers.setLayout(gl_customers);
 		
 		DefaultTableModel customersModel = new DefaultTableModel();
-		String[] columnHeaders = {"First Name", "Last Name", "Phone Number", "Email"};
-		String[] row = new String[4];
-		customersModel.setColumnIdentifiers(columnHeaders);
+		String[] customerColumnHeaders = {"First Name", "Last Name", "Phone Number", "Email"};
+		String[] customerRow = new String[4];
+		customersModel.setColumnIdentifiers(customerColumnHeaders);
 		customersTable.setModel(customersModel);
 		
-		DefaultCellEditor editor = (DefaultCellEditor) customersTable.getDefaultEditor(Object.class);
-		editor.setClickCountToStart(50);
-	
+		
+		// ##################################################################################################################################################
+		// ################################################################# PRODUCTS PANEL #################################################################
+		// ##################################################################################################################################################
 		
 		
-		// Button Action Listeners
+		JPanel products = new JPanel();
+		products.setBackground(Color.GRAY);
+		frame.getContentPane().add(products, "name_101112397770335");
 		
+		JLabel sortByLabel_1 = new JLabel("Sort By:");
+		
+		JComboBox productSortByComboBox = new JComboBox();
+		
+		JRadioButton productAscendingButton = new JRadioButton("Ascending");
+		
+		JRadioButton productDescendingButton = new JRadioButton("Descending");
+		
+		JButton productSortByButton = new JButton("SORT");
+		
+		JButton productReturnHomeButton = new JButton("RETURN HOME");
+		productReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		
+		JLabel productLabel = new JLabel("Product:");
+		productLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		productLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		productInput = new JTextField();
+		productInput.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		productInput.setColumns(10);
+		
+		JLabel productIDLabel = new JLabel("Product ID:");
+		productIDLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		productIDInput = new JTextField();
+		productIDInput.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		productIDInput.setColumns(10);
+		
+		JLabel unitPriceLabel = new JLabel("Unit Price:");
+		unitPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		unitPriceLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		unitPriceInput = new JTextField();
+		unitPriceInput.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		unitPriceInput.setColumns(10);
+		
+		JButton productAddButton = new JButton("ADD");
+		productAddButton.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton productDeleteButton = new JButton("DELETE");
+		productDeleteButton.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton productClearButton = new JButton("CLEAR");
+		productClearButton.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JButton productUpdateButton = new JButton("UPDATE");
+		productUpdateButton.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		
+		JScrollPane productScrollPane = new JScrollPane();
+		GroupLayout gl_products = new GroupLayout(products);
+		gl_products.setHorizontalGroup(
+			gl_products.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_products.createSequentialGroup()
+					.addGap(51)
+					.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_products.createSequentialGroup()
+							.addComponent(sortByLabel_1, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addComponent(productSortByComboBox, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addComponent(productAscendingButton, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+							.addGap(2)
+							.addComponent(productDescendingButton, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addComponent(productSortByButton, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_products.createSequentialGroup()
+							.addGap(233)
+							.addComponent(productReturnHomeButton, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
+						.addComponent(productScrollPane, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_products.createSequentialGroup()
+							.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_products.createSequentialGroup()
+									.addComponent(unitPriceLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+									.addGap(6)
+									.addComponent(unitPriceInput, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_products.createSequentialGroup()
+									.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+										.addComponent(productIDLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+										.addComponent(productLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+									.addGap(6)
+									.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+										.addComponent(productIDInput, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+										.addComponent(productInput, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE))))
+							.addGap(46)
+							.addGroup(gl_products.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_products.createSequentialGroup()
+									.addComponent(productAddButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(productUpdateButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_products.createSequentialGroup()
+									.addComponent(productDeleteButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(productClearButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)))))
+					.addContainerGap(48, Short.MAX_VALUE))
+		);
+		gl_products.setVerticalGroup(
+			gl_products.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_products.createSequentialGroup()
+					.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_products.createSequentialGroup()
+							.addGap(41)
+							.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_products.createSequentialGroup()
+									.addGap(5)
+									.addComponent(productIDLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+									.addGap(28)
+									.addComponent(productLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_products.createSequentialGroup()
+									.addComponent(productIDInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(productInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+							.addGap(18)
+							.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_products.createSequentialGroup()
+									.addGap(9)
+									.addComponent(unitPriceLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_products.createSequentialGroup()
+									.addGap(4)
+									.addComponent(unitPriceInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_products.createSequentialGroup()
+							.addGap(53)
+							.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+								.addComponent(productUpdateButton, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_products.createSequentialGroup()
+									.addComponent(productAddButton, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+									.addGap(28)
+									.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+										.addComponent(productDeleteButton, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+										.addComponent(productClearButton, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))))))
+					.addGap(74)
+					.addGroup(gl_products.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_products.createSequentialGroup()
+							.addGap(5)
+							.addComponent(sortByLabel_1))
+						.addGroup(gl_products.createSequentialGroup()
+							.addGap(1)
+							.addComponent(productSortByComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_products.createSequentialGroup()
+							.addGap(1)
+							.addComponent(productAscendingButton))
+						.addGroup(gl_products.createSequentialGroup()
+							.addGap(1)
+							.addComponent(productDescendingButton))
+						.addComponent(productSortByButton))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(productScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+					.addGap(8)
+					.addComponent(productReturnHomeButton)
+					.addContainerGap(17, Short.MAX_VALUE))
+		);
+		
+		productsTable = new JTable();
+		productsTable.setGridColor(Color.BLACK);
+		productsTable.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		productScrollPane.setViewportView(productsTable);
+		products.setLayout(gl_products);
+		
+		DefaultTableModel productsModel = new DefaultTableModel();
+		String[] productColumnHeaders = {"Product ID", "Product", "Unit Price"};
+		String[] productRow = new String[3];
+		productsModel.setColumnIdentifiers(productColumnHeaders);
+		productsTable.setModel(productsModel);
+		
+		DefaultCellEditor customerEditor = (DefaultCellEditor) customersTable.getDefaultEditor(Object.class);
+		customerEditor.setClickCountToStart(50);
+		DefaultCellEditor productEditor = (DefaultCellEditor) productsTable.getDefaultEditor(Object.class);
+		productEditor.setClickCountToStart(50);
+		
+		
+		// ################################################################################################################################################## 
+		// ######################################################## BUTTON ACTION LISTENERS ################################################################# 
+		// ################################################################################################################################################## 
+		
+		/**
+		 * ActionListeners for navigating the different panels through the home page buttons and return home buttons
+		 */
 		customersButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				home.setVisible(false);
 				customers.setVisible(true);
+			}
+		});
+		
+		productsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				home.setVisible(false);
+				products.setVisible(true);
 			}
 		});
 		
@@ -320,6 +517,16 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		productReturnHomeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				products.setVisible(false);
+				home.setVisible(true);
+			}
+		});
+		
+		/**
+		 * ActionListeners for displaying data of selected row
+		 */
 		customersTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -331,6 +538,20 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		productsTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = productsTable.getSelectedRow();
+				productIDInput.setText(productsModel.getValueAt(row, 0).toString());
+				productInput.setText(productsModel.getValueAt(row, 1).toString());
+				unitPriceInput.setText(productsModel.getValueAt(row, 2).toString());
+			}
+		});
+		
+		
+		/**
+		 * ActionListeners for ADD buttons
+		 */
 		customerAddButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String firstName = firstNameInput.getText().trim();
@@ -351,12 +572,12 @@ public class CustomerSalesOrderView {
 				}else if(!numerical) {
 					JOptionPane.showMessageDialog(null, "Please Enter All Digit Phone Number");
 				}else {
-					row[0] = firstName;
-					row[1] = lastName;
-					row[2] = phoneNumber;
-					row[3] = email;
+					customerRow[0] = firstName;
+					customerRow[1] = lastName;
+					customerRow[2] = phoneNumber;
+					customerRow[3] = email;
 					
-					customersModel.addRow(row);
+					customersModel.addRow(customerRow);
 					
 					JOptionPane.showMessageDialog(null, "Data Successfully Added");
 					
@@ -369,6 +590,46 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		productAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String productID = productIDInput.getText().trim();
+				String productName = productInput.getText().trim();
+				String unitPrice = unitPriceInput.getText().trim();
+				boolean numericalInput = true;
+				
+				try {
+					Double.parseDouble(unitPrice);
+				} catch (NumberFormatException exception) {
+					numericalInput = false;
+				}
+				
+				if(productID.equals("") || productName.equals("") || unitPrice.equals("")) {
+					JOptionPane.showMessageDialog(null, "Please Complete All Fields");
+					
+				}else if(!numericalInput) {
+					JOptionPane.showMessageDialog(null, "Please Enter All Digit Unit Price");
+				}else {
+					productRow[0] = productID;
+					productRow[1] = productName;
+					productRow[2] = unitPrice;
+					
+					productsModel.addRow(productRow);
+					
+					JOptionPane.showMessageDialog(null, "Data Successfully Added");
+					
+					Product product = new Product(productID, productName, Double.parseDouble(unitPrice));
+					productList.add(product);
+					
+					clear();
+				}
+				
+			}
+		});
+		
+		
+		/**
+		 * ActionListeners for UPDATE buttons
+		 */
 		customerUpdateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String firstName = firstNameInput.getText().trim();
@@ -470,6 +731,9 @@ public class CustomerSalesOrderView {
 			lastNameInput.setText("");
 			phoneNumberInput.setText("");
 			emailInput.setText("");
+			productIDInput.setText("");
+			productInput.setText("");
+			unitPriceInput.setText("");
 		}
 		 
 		 public static void customerSelectionSort(ArrayList<Customer> list, String sortBy, boolean numerical) {
@@ -542,5 +806,4 @@ public class CustomerSalesOrderView {
 				 stack.pop();
 			 }
 		 }
-		
 }
