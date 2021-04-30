@@ -550,7 +550,7 @@ public class CustomerSalesOrderView {
 		orderProductsQuantityInput.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		orderProductsQuantityInput.setColumns(10);
 		
-		JButton btnNewButton = new JButton("ADD PRODUCT");
+		JButton orderProductAddButton = new JButton("ADD PRODUCT");
 		
 		JButton orderReturnHomeButton = new JButton("RETURN HOME");
 		orderReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
@@ -600,7 +600,7 @@ public class CustomerSalesOrderView {
 											.addGroup(gl_orders.createSequentialGroup()
 												.addComponent(orderProductComboBox, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
 												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))))
+												.addComponent(orderProductAddButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))))
 									.addGroup(gl_orders.createSequentialGroup()
 										.addComponent(orderNameLabel)
 										.addPreferredGap(ComponentPlacement.RELATED)
@@ -664,7 +664,7 @@ public class CustomerSalesOrderView {
 										.addComponent(orderProductsQuantityInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
 								.addGroup(gl_orders.createSequentialGroup()
 									.addGap(18)
-									.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(orderProductAddButton, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_orders.createSequentialGroup()
 							.addGap(67)
 							.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
@@ -903,6 +903,10 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		// NEED TO HAVE PRODUCTS TABLE CLEARED AFTER ADDING ORDER
+		// NEED DIFFERENT PRODUCTS TO SHOW FOR EACH ORDER
+		// CALCULATE PRODUCT PRICE NOT WORKING
+		
 		orderAddButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int orderComplete = 1;
@@ -911,7 +915,7 @@ public class CustomerSalesOrderView {
 				Customer customer = ((Customer)orderCustomerComboBox.getSelectedItem());
 				String customerString = customer.getFirstName() + " " + customer.getLastName();
 				String numProducts = orderProductsTable.getRowCount() + " Products";
-				double orderTotalPrice = calculateTotalPrice();
+				double orderTotalPrice = calculateTotalPrice("order");
 				String salesman = salesmanInput.getText().trim();
 					
 				if(orderName.equals("") || orderCustomerComboBox.getSelectedIndex() < 0 || orderProductsTable.getRowCount() == 0 || salesman.equals("")) {
@@ -936,12 +940,48 @@ public class CustomerSalesOrderView {
 							orderList.add(order);
 							
 							clear();
+							orderCustomerComboBox.setSelectedIndex(-1);
+							orderProductComboBox.setSelectedIndex(-1);
 					}
 				} 
 				
 			}
 		});
 		
+		
+		orderProductAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Product product = ((Product)orderProductComboBox.getSelectedItem());
+				String quantity = orderProductsQuantityInput.getText().trim();
+				boolean numericalInput = true;
+				
+				try {
+					Integer.parseInt(quantity);
+				} catch (NumberFormatException exception) {
+					numericalInput = false;
+				}
+				
+				if(quantity.equals("") || orderProductComboBox.getSelectedIndex() < 0) {
+					JOptionPane.showMessageDialog(null, "Please Complete All Fields");
+					
+				}else if(!numericalInput) {
+					JOptionPane.showMessageDialog(null, "Please Enter Numerical Value For Quantity");
+				}else {
+					orderProductRow[0] = product.getProductID();
+					orderProductRow[1] = product.getProductName();
+					orderProductRow[2] = product.getUnitPrice() + "";
+					orderProductRow[3] = quantity;
+					orderProductRow[4] = calculateTotalPrice("product") + "";
+					
+					orderProductsModel.addRow(orderProductRow);
+					
+					JOptionPane.showMessageDialog(null, "Data Successfully Added");
+					
+					
+				}
+				
+			}
+		});
 		
 		
 		/**
@@ -1276,6 +1316,9 @@ public class CustomerSalesOrderView {
 			 productIDInput.setText("");
 			 productInput.setText("");
 			 unitPriceInput.setText("");
+			 orderNameInput.setText("");
+			 salesmanInput.setText("");
+			 orderProductsQuantityInput.setText("");
 		 }
 		  
 		 /**
@@ -1295,13 +1338,21 @@ public class CustomerSalesOrderView {
 			 }
 		 }
 		 
-		 public double calculateTotalPrice() {
+		 public double calculateTotalPrice(String calculation) {
 			 double total = 0;
 			 
-			 for(int i = 0; i < orderProductsTable.getRowCount(); i++) {
-				 total += Double.parseDouble((String)orderProductsTable.getValueAt(i, 4));
+			 if(calculation == "order") {
+				 for(int i = 0; i < orderProductsTable.getRowCount(); i++) {
+					 total += Double.parseDouble((String)orderProductsTable.getValueAt(i, 4));
+				 }
+			 }else if(calculation == "product") {
+				 for(int i = 0; i <orderProductsTable.getRowCount(); i++) {
+					 Double unitPrice = Double.parseDouble((String)orderProductsTable.getValueAt(i, 2));
+					 Double quantity = Double.parseDouble((String)orderProductsTable.getValueAt(i, 3));
+					 total = unitPrice * quantity;
+				 }
 			 }
-			 
+			
 			 return total;
 		 }
 }
