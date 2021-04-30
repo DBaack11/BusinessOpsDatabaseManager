@@ -93,7 +93,7 @@ public class CustomerSalesOrderView {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 700, 533);
+		frame.setBounds(100, 100, 700, 543);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
@@ -535,9 +535,6 @@ public class CustomerSalesOrderView {
 		
 		JScrollPane orderScrollPane = new JScrollPane();
 		
-		JButton orderReturnHomeButton = new JButton("RETURN HOME");
-		orderReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		
 		JComboBox orderCustomerComboBox = new JComboBox();
 		
 		JComboBox comboBox = new JComboBox();
@@ -552,8 +549,8 @@ public class CustomerSalesOrderView {
 		
 		JButton btnNewButton = new JButton("ADD PRODUCT");
 		
-		JButton orderReturnHomeButton_1 = new JButton("RETURN HOME");
-		orderReturnHomeButton_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		JButton orderReturnHomeButton = new JButton("RETURN HOME");
+		orderReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		
 		JScrollPane orderProductsScrollPane = new JScrollPane();
 		
@@ -574,6 +571,7 @@ public class CustomerSalesOrderView {
 		JLabel orderProductsTableLabel = new JLabel("Order Products ");
 		
 		JSeparator separator = new JSeparator();
+		separator.setBackground(Color.BLACK);
 		separator.setForeground(Color.BLACK);
 		GroupLayout gl_orders = new GroupLayout(orders);
 		gl_orders.setHorizontalGroup(
@@ -581,18 +579,16 @@ public class CustomerSalesOrderView {
 				.addGroup(gl_orders.createSequentialGroup()
 					.addGap(24)
 					.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_orders.createParallelGroup(Alignment.TRAILING)
-							.addGroup(gl_orders.createSequentialGroup()
-								.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
-									.addGroup(gl_orders.createSequentialGroup()
-										.addGap(229)
-										.addComponent(orderReturnHomeButton_1, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_orders.createSequentialGroup()
-										.addComponent(orderScrollPane, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)))
-								.addGap(26))
-							.addComponent(orderReturnHomeButton, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_orders.createSequentialGroup()
+							.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_orders.createSequentialGroup()
+									.addGap(229)
+									.addComponent(orderReturnHomeButton, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_orders.createSequentialGroup()
+									.addComponent(orderScrollPane, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)))
+							.addGap(26))
 						.addGroup(gl_orders.createSequentialGroup()
 							.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_orders.createParallelGroup(Alignment.LEADING, false)
@@ -646,7 +642,7 @@ public class CustomerSalesOrderView {
 					.addPreferredGap(ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
 					.addComponent(orderProductsTableLabel)
 					.addGap(94))
-				.addComponent(separator, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+				.addComponent(separator, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
 		);
 		gl_orders.setVerticalGroup(
 			gl_orders.createParallelGroup(Alignment.TRAILING)
@@ -708,11 +704,9 @@ public class CustomerSalesOrderView {
 						.addGroup(gl_orders.createSequentialGroup()
 							.addComponent(orderScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(orderReturnHomeButton_1)
-							.addPreferredGap(ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
 							.addComponent(orderReturnHomeButton))
 						.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
+					.addContainerGap(70, Short.MAX_VALUE))
 		);
 		
 		orderProductsTable = new JTable();
@@ -749,6 +743,13 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		ordersButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				home.setVisible(false);
+				orders.setVisible(true);
+			}
+		});
+		
 		customerReturnHomeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customers.setVisible(false);
@@ -759,6 +760,13 @@ public class CustomerSalesOrderView {
 		productReturnHomeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				products.setVisible(false);
+				home.setVisible(true);
+			}
+		});
+		
+		orderReturnHomeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				orders.setVisible(false);
 				home.setVisible(true);
 			}
 		});
