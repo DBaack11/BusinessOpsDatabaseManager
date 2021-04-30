@@ -36,6 +36,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+
 import javax.swing.JSeparator;
 
 /**
@@ -59,12 +61,13 @@ public class CustomerSalesOrderView {
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private ArrayList<Product> productList = new ArrayList<Product>();
 	private ArrayList<Order> orderList = new ArrayList<Order>();
-	private ArrayList<Product> orderProducts = new ArrayList<Product>();
 	private JTextField orderNameInput;
 	private JTextField salesmanInput;
+	private ArrayList<Product> temp = new ArrayList<Product>();
 	private JTable ordersTable;
 	private JTextField orderProductsQuantityInput;
 	private JTable orderProductsTable;
+	DecimalFormat df = new DecimalFormat("#.##");
 
 	/**
 	 * Launch the application.
@@ -539,6 +542,7 @@ public class CustomerSalesOrderView {
 		JComboBox orderCustomerComboBox = new JComboBox();
 		orderCustomerComboBox.addItem(null);
 		
+		
 		JComboBox orderProductComboBox = new JComboBox();
 		orderProductComboBox.addItem(null);
 		
@@ -803,10 +807,33 @@ public class CustomerSalesOrderView {
 		ordersTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				orderProductsModel.setRowCount(0);
 				int row = ordersTable.getSelectedRow();
+				int orderIndex = 0;
+				
+				String id = ordersModel.getValueAt(row, 0).toString();
+				int counter = 0;
+				for(Order order : orderList) {
+					if(order.getOrderName().equals(id)) {
+						
+						for(int i = 0; i < order.getProducts().size(); i++) {
+							Product product = order.getProducts().get(i);
+							orderProductRow[0] = product.getProductID();
+							orderProductRow[1] = product.getProductName();
+							orderProductRow[2] = product.getUnitPrice() + "";
+							orderProductRow[3] = product.getQuantity() + "";
+							orderProductRow[4] = "$" + product.getProductTotalPrice();
+							
+							orderProductsModel.addRow(orderProductRow);
+						}
+					}
+					counter++;
+				}
+				
 				orderNameInput.setText(ordersModel.getValueAt(row, 0).toString());
-				orderCustomerComboBox.setSelectedItem(ordersModel.getValueAt(row, 1));
+				orderCustomerComboBox.setSelectedIndex(counter);;;
 				salesmanInput.setText(ordersModel.getValueAt(row, 4).toString());
+				
 			}
 		});
 		
@@ -910,15 +937,18 @@ public class CustomerSalesOrderView {
 		orderAddButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int orderComplete = 1;
-				
+				ArrayList<Product> orderProducts = new ArrayList<Product>();
+				for(Product product : temp) {
+					orderProducts.add(product);
+				}
 				String orderName = orderNameInput.getText().trim();
 				Customer customer = ((Customer)orderCustomerComboBox.getSelectedItem());
 				String customerString = customer.getFirstName() + " " + customer.getLastName();
-				String numProducts = orderProductsTable.getRowCount() + " Products";
-				double orderTotalPrice = calculateTotalPrice("order");
+				String numProducts = orderProducts.size() + " Products";
+				double orderTotalPrice = Double.parseDouble(calculateTotalPrice());
 				String salesman = salesmanInput.getText().trim();
 					
-				if(orderName.equals("") || orderCustomerComboBox.getSelectedIndex() < 0 || orderProductsTable.getRowCount() == 0 || salesman.equals("")) {
+				if(orderName.equals("") || orderCustomerComboBox.getSelectedIndex() == 0 || orderProductsTable.getRowCount() == 0 || salesman.equals("")) {
 						JOptionPane.showMessageDialog(null, "Please Complete All Fields");
 						
 					}else {	
@@ -940,6 +970,8 @@ public class CustomerSalesOrderView {
 							orderList.add(order);
 							
 							clear();
+							temp.clear();
+							orderProductsModel.setRowCount(0);
 							orderCustomerComboBox.setSelectedIndex(-1);
 							orderProductComboBox.setSelectedIndex(-1);
 					}
@@ -952,7 +984,8 @@ public class CustomerSalesOrderView {
 		orderProductAddButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Product product = ((Product)orderProductComboBox.getSelectedItem());
-				String quantity = orderProductsQuantityInput.getText().trim();
+   				String quantity = orderProductsQuantityInput.getText().trim();
+   				
 				boolean numericalInput = true;
 				
 				try {
@@ -967,13 +1000,16 @@ public class CustomerSalesOrderView {
 				}else if(!numericalInput) {
 					JOptionPane.showMessageDialog(null, "Please Enter Numerical Value For Quantity");
 				}else {
+					product.setQuantity(Integer.parseInt(quantity));
 					orderProductRow[0] = product.getProductID();
 					orderProductRow[1] = product.getProductName();
 					orderProductRow[2] = product.getUnitPrice() + "";
 					orderProductRow[3] = quantity;
-					orderProductRow[4] = calculateTotalPrice("product") + "";
+					orderProductRow[4] = "$" + product.getProductTotalPrice();
 					
 					orderProductsModel.addRow(orderProductRow);
+				
+					temp.add(product);
 					
 					JOptionPane.showMessageDialog(null, "Data Successfully Added");
 					
@@ -1032,6 +1068,49 @@ public class CustomerSalesOrderView {
 				JOptionPane.showMessageDialog(null, "Data Successfully Updated");
 				
 				clear();
+				}else {
+					JOptionPane.showMessageDialog(null, "Please Select A Row");
+				}
+			}
+		});
+		
+		orderUpdateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = ordersTable.getSelectedRow();
+				String id = ordersModel.getValueAt(row, 0).toString();
+				int productsSize = 0;
+				ArrayList<Product> temp = new ArrayList<Product>();
+				
+				for(Order order : orderList) {
+					if(order.getOrderName().equals(id)) {
+						temp = order.getProducts();
+						productsSize =	temp.size();
+					}
+				}
+				
+				String orderName = orderNameInput.getText().trim();
+				Customer customer = ((Customer)orderCustomerComboBox.getSelectedItem());
+				String customerString = customer.getFirstName() + " " + customer.getLastName();
+				String numProducts =  productsSize + " Products";
+				double orderTotalPrice = Double.parseDouble(calculateTotalPrice());
+				String salesman = salesmanInput.getText().trim();
+				
+				
+				Order updatedOrder = new Order(orderName, customer, temp, orderTotalPrice, salesman);
+				orderList.set(row, updatedOrder);
+				
+				if(row>=0) {
+					ordersModel.setValueAt(orderName, row, 0);
+					ordersModel.setValueAt(customerString, row, 1);
+					ordersModel.setValueAt(numProducts, row, 2);
+					ordersModel.setValueAt("$" + orderTotalPrice, row, 3);
+					ordersModel.setValueAt(salesman, row, 4);
+					
+				
+					JOptionPane.showMessageDialog(null, "Data Successfully Updated");
+				
+					clear();
+					orderCustomerComboBox.setSelectedIndex(0);
 				}else {
 					JOptionPane.showMessageDialog(null, "Please Select A Row");
 				}
@@ -1338,21 +1417,16 @@ public class CustomerSalesOrderView {
 			 }
 		 }
 		 
-		 public double calculateTotalPrice(String calculation) {
+		 public String calculateTotalPrice() {
 			 double total = 0;
 			 
-			 if(calculation == "order") {
+			 
 				 for(int i = 0; i < orderProductsTable.getRowCount(); i++) {
-					 total += Double.parseDouble((String)orderProductsTable.getValueAt(i, 4));
+					 String value = (String) orderProductsTable.getValueAt(i, 4);
+					 String substring = value.substring(1);
+					 total += Double.parseDouble(substring);
 				 }
-			 }else if(calculation == "product") {
-				 for(int i = 0; i <orderProductsTable.getRowCount(); i++) {
-					 Double unitPrice = Double.parseDouble((String)orderProductsTable.getValueAt(i, 2));
-					 Double quantity = Double.parseDouble((String)orderProductsTable.getValueAt(i, 3));
-					 total = unitPrice * quantity;
-				 }
-			 }
-			
-			 return total;
+				 
+			 return df.format(total);
 		 }
 }

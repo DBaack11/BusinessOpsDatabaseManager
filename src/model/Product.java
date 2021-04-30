@@ -25,13 +25,13 @@ public class Product {
 		this.unitPrice = unitPrice;
 	}
 	
-	public Product(String productID, double unitPrice, String productName, int quantity, double productTotalPrice) {
+	public Product(String productID, double unitPrice, String productName, int quantity) {
 		super();
 		this.productID = productID;
 		this.unitPrice = unitPrice;
 		this.productName = productName;
 		this.quantity = quantity;
-		this.productTotalPrice = productTotalPrice;
+		this.productTotalPrice = unitPrice * quantity;
 	}
 
 	public String getProductID() {
@@ -64,6 +64,7 @@ public class Product {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+		this.setProductTotalPrice(quantity * this.getUnitPrice());
 	}
 
 	public double getProductTotalPrice() {
