@@ -30,8 +30,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -806,12 +804,16 @@ public class CustomerSalesOrderView {
 				String phoneNumber = phoneNumberInput.getText().trim();
 				String email = emailInput.getText().trim();
 				boolean numerical = true;
-				
-				try {
-					Integer.parseInt(phoneNumber);
-				} catch (NumberFormatException exception) {
-					numerical = false;
-				}
+			
+					for(int i = 0; i<phoneNumber.length(); i++) {
+						if(!(Character.isDigit(phoneNumber.charAt(i)))) {
+							numerical = false;
+							break;
+						}
+					}
+			
+					
+	
 				
 				if(firstName.equals("") || lastName.equals("") || phoneNumber.equals("") || email.equals("")) {
 					JOptionPane.showMessageDialog(null, "Please Complete All Fields");
