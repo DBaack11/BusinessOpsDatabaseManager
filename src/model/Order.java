@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class Order {
 	private String date;
+	private String orderName;
 	private Customer customer;
 	private ArrayList<Product> products;
 	private double orderTotalPrice;
@@ -24,9 +25,10 @@ public class Order {
 		this.setDate(now.getMonth() + "/" + now.getDayOfMonth() + "/" + now.getYear());
 	}
 	
-	public Order(Customer customer, ArrayList<Product> products, double orderTotalPrice, String salesman) {
+	public Order(String orderName, Customer customer, ArrayList<Product> products, double orderTotalPrice, String salesman) {
 		super();
 		this.setDate(now.getMonth() + "/" + now.getDayOfMonth() + "/" + now.getYear());
+		this.setOrderName(orderName);
 		this.setCustomer(customer);
 		this.setProducts(products);
 		this.setOrderTotalPrice(orderTotalPrice);
@@ -77,6 +79,20 @@ public class Order {
 	public String toString() {
 		return "Order [date=" + date + ", customer=" + customer + ", products=" + products + ", orderTotalPrice="
 				+ orderTotalPrice + ", salesman=" + salesman + "]";
+	}
+
+	/**
+	 * @return the orderName
+	 */
+	public String getOrderName() {
+		return orderName;
+	}
+
+	/**
+	 * @param orderName the orderName to set
+	 */
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
 	}
 	
 	

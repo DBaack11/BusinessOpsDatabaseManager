@@ -58,6 +58,11 @@ public class CustomerSalesOrderView {
 	
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private ArrayList<Product> productList = new ArrayList<Product>();
+	private JTextField orderNameInput;
+	private JTextField salesmanInput;
+	private JTable ordersTable;
+	private JTextField orderProductsQuantityInput;
+	private JTable orderProductsTable;
 
 	/**
 	 * Launch the application.
@@ -87,7 +92,7 @@ public class CustomerSalesOrderView {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 700, 526);
+		frame.setBounds(100, 100, 700, 533);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
@@ -483,6 +488,183 @@ public class CustomerSalesOrderView {
 		String[] productRow = new String[3];
 		productsModel.setColumnIdentifiers(productColumnHeaders);
 		productsTable.setModel(productsModel);
+		
+		
+		// ##################################################################################################################################################
+		// ################################################################# ORDERS PANEL ###################################################################
+		// ##################################################################################################################################################
+				
+		JPanel orders = new JPanel();
+		orders.setBackground(Color.GRAY);
+		frame.getContentPane().add(orders, "name_1145650434335");
+		
+		JLabel orderNameLabel = new JLabel("Order Name:");
+		orderNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		orderNameLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		orderNameInput = new JTextField();
+		orderNameInput.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		orderNameInput.setColumns(10);
+		
+		JLabel orderCustomerLabel = new JLabel("Customer:");
+		orderCustomerLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		orderCustomerLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		JLabel orderProductsLabel = new JLabel("Products:");
+		orderProductsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		orderProductsLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		JLabel salesmanLabel = new JLabel("Salesman:");
+		salesmanLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		salesmanLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		salesmanInput = new JTextField();
+		salesmanInput.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		salesmanInput.setColumns(10);
+		
+		JLabel sortByLabel_2 = new JLabel("Sort By:");
+		
+		JComboBox ordersSortByComboBox = new JComboBox();
+		
+		JRadioButton orderAscendingButton = new JRadioButton("Ascending");
+		
+		JRadioButton orderDescendingButton = new JRadioButton("Descending");
+		
+		JButton orderSortByButton = new JButton("SORT");
+		
+		JScrollPane orderScrollPane = new JScrollPane();
+		
+		JButton orderReturnHomeButton = new JButton("RETURN HOME");
+		orderReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		
+		JComboBox orderCustomerComboBox = new JComboBox();
+		
+		JComboBox comboBox = new JComboBox();
+		
+		JLabel orderProductsQuantityLabel = new JLabel("Quantity:");
+		orderProductsQuantityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		orderProductsQuantityLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		
+		orderProductsQuantityInput = new JTextField();
+		orderProductsQuantityInput.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		orderProductsQuantityInput.setColumns(10);
+		
+		JButton btnNewButton = new JButton("ADD PRODUCT");
+		
+		JButton orderReturnHomeButton_1 = new JButton("RETURN HOME");
+		orderReturnHomeButton_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		
+		JScrollPane orderProductsScrollPane = new JScrollPane();
+		GroupLayout gl_orders = new GroupLayout(orders);
+		gl_orders.setHorizontalGroup(
+			gl_orders.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_orders.createSequentialGroup()
+					.addGap(24)
+					.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_orders.createSequentialGroup()
+							.addGap(98)
+							.addComponent(orderProductsQuantityLabel, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(orderProductsQuantityInput, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_orders.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(gl_orders.createSequentialGroup()
+								.addGap(13)
+								.addGroup(gl_orders.createParallelGroup(Alignment.TRAILING)
+									.addComponent(orderCustomerLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+									.addComponent(salesmanLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+									.addComponent(orderProductsLabel))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
+									.addComponent(salesmanInput)
+									.addComponent(orderCustomerComboBox, 0, 193, Short.MAX_VALUE)
+									.addGroup(gl_orders.createSequentialGroup()
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))))
+							.addGroup(gl_orders.createSequentialGroup()
+								.addComponent(orderNameLabel)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(orderNameInput)))
+						.addGroup(gl_orders.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_orders.createSequentialGroup()
+								.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
+									.addGroup(gl_orders.createSequentialGroup()
+										.addGap(229)
+										.addComponent(orderReturnHomeButton_1, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_orders.createSequentialGroup()
+										.addComponent(orderScrollPane, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)))
+								.addGap(26))
+							.addComponent(orderReturnHomeButton, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))))
+				.addGroup(gl_orders.createSequentialGroup()
+					.addGap(62)
+					.addComponent(sortByLabel_2, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
+					.addComponent(ordersSortByComboBox, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
+					.addComponent(orderAscendingButton, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(orderDescendingButton)
+					.addGap(46)
+					.addComponent(orderSortByButton, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_orders.setVerticalGroup(
+			gl_orders.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_orders.createSequentialGroup()
+					.addGap(15)
+					.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
+						.addComponent(orderNameLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+						.addComponent(orderNameInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
+						.addComponent(orderCustomerLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+						.addComponent(orderCustomerComboBox, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_orders.createSequentialGroup()
+							.addGap(13)
+							.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(orderProductsLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
+								.addComponent(orderProductsQuantityLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+								.addComponent(orderProductsQuantityInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_orders.createSequentialGroup()
+							.addGap(18)
+							.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)))
+					.addGap(22)
+					.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
+						.addComponent(salesmanLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+						.addComponent(salesmanInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+					.addGap(42)
+					.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_orders.createSequentialGroup()
+							.addGap(4)
+							.addComponent(sortByLabel_2))
+						.addComponent(ordersSortByComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
+							.addComponent(orderAscendingButton)
+							.addComponent(orderDescendingButton)
+							.addComponent(orderSortByButton)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_orders.createSequentialGroup()
+							.addComponent(orderScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(orderReturnHomeButton_1)
+							.addPreferredGap(ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+							.addComponent(orderReturnHomeButton))
+						.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		
+		orderProductsTable = new JTable();
+		orderProductsScrollPane.setViewportView(orderProductsTable);
+		
+		ordersTable = new JTable();
+		orderScrollPane.setViewportView(ordersTable);
+		orders.setLayout(gl_orders);
 		
 		DefaultCellEditor customerEditor = (DefaultCellEditor) customersTable.getDefaultEditor(Object.class);
 		customerEditor.setClickCountToStart(50);
