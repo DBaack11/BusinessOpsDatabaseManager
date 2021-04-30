@@ -67,7 +67,7 @@ public class CustomerSalesOrderView {
 	private JTable ordersTable;
 	private JTextField orderProductsQuantityInput;
 	private JTable orderProductsTable;
-	DecimalFormat df = new DecimalFormat("#.##");
+	DecimalFormat df = new DecimalFormat("##.##");
 
 	/**
 	 * Launch the application.
@@ -530,6 +530,7 @@ public class CustomerSalesOrderView {
 		JLabel sortByLabel_2 = new JLabel("Sort By:");
 		
 		JComboBox ordersSortByComboBox = new JComboBox();
+		ordersSortByComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Order Name", "Customer First Name", "Customer Last Name", "Number of Products", "Salesman", "Order Total Price"}));
 		
 		JRadioButton orderAscendingButton = new JRadioButton("Ascending");
 		
@@ -1132,6 +1133,13 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		orderClearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				orderCustomerComboBox.setSelectedIndex(0);
+				clear();
+			}
+		});
+		
 		/**
 		 * ActionListeners for DELETE buttons
 		 */
@@ -1163,6 +1171,21 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		orderDeleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = ordersTable.getSelectedRow();
+				
+				if(row>=0) {
+					ordersModel.removeRow(row);
+					JOptionPane.showMessageDialog(null, "Data Successfully Deleted");
+					orderCustomerComboBox.setSelectedIndex(0);
+					clear();
+				}else {
+					JOptionPane.showMessageDialog(null, "Please Select A Row");
+				}
+			}
+		});
+		
 		
 		/**
 		 * ActionListeners for Ascending and Descending Buttons
@@ -1179,6 +1202,12 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		orderAscendingButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				orderDescendingButton.setSelected(false);
+			}
+		});
+		
 		customerDescendingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customerAscendingButton.setSelected(false);
@@ -1188,6 +1217,12 @@ public class CustomerSalesOrderView {
 		productDescendingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				productAscendingButton.setSelected(false);
+			}
+		});
+		
+		orderDescendingButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				orderAscendingButton.setSelected(false);
 			}
 		});
 		
@@ -1255,6 +1290,43 @@ public class CustomerSalesOrderView {
 							productsModel.setValueAt(product.getProductID(), i, 0);
 							productsModel.setValueAt(product.getProductName(), i, 1);
 							productsModel.setValueAt(product.getUnitPrice(), i, 2);
+							
+						}
+							
+				
+				} else {
+					JOptionPane.showMessageDialog(null, "Please Select A Sorting Category and Order");
+				}
+			}
+		});
+		
+		orderSortByButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					
+				if(ordersSortByComboBox.getSelectedIndex()>0 && (orderAscendingButton.isSelected() || orderDescendingButton.isSelected())) {
+	
+						String sortBy = ordersSortByComboBox.getSelectedItem() + "";
+						boolean numerical = false;
+						
+						if(sortBy.equals("Number of Products") || sortBy.equals("Order Total Price")) {
+							numerical = true;
+						}
+						
+						orderSelectionSort(orderList, sortBy, numerical);
+						
+						if(orderDescendingButton.isSelected()) {
+							reverse(orderList);
+						}
+						
+						int rowCount = ordersModel.getRowCount();
+						
+						for(int i = 0; i < rowCount; i++) {
+							Order order = orderList.get(i);
+							ordersModel.setValueAt(order.getOrderName(), i, 0);
+							ordersModel.setValueAt(order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName(), i, 1);
+							ordersModel.setValueAt(order.getProducts().size() + " Products", i, 2);
+							ordersModel.setValueAt("$" + order.getOrderTotalPrice(), i, 3);
+							ordersModel.setValueAt(order.getSalesman(), i, 4);
 							
 						}
 							
@@ -1382,7 +1454,70 @@ public class CustomerSalesOrderView {
 				//executionTime = endTime-startTime;
 			}
 		 
-		 
+		 public static void orderSelectionSort(ArrayList<Order> list, String sortBy, boolean numerical) {
+				//long startTime = System.currentTimeMillis();
+			
+			 	String value = "";
+			 	String minValue = "";
+	
+				int n = list.size();
+				for(int i=0; i<n-1; i++) {
+					int min = i;
+					for(int j=i+1; j<n; j++) {
+						
+							switch(sortBy) {
+							case "Order Name": 
+								value = list.get(j).getOrderName();
+								minValue = list.get(min).getOrderName();
+								break;
+							case "Customer First Name":
+								value = list.get(j).getCustomer().getFirstName();
+								minValue = list.get(min).getCustomer().getFirstName();
+								break;
+							case "Customer Last Name":
+								value = list.get(j).getCustomer().getLastName();
+								minValue = list.get(min).getCustomer().getLastName();
+								break;
+							case "Number of Products":
+								value = list.get(j).getProducts().size() + "";
+								minValue = list.get(min).getProducts().size() + "";
+								break;
+							case "Salesman":
+								value = list.get(j).getSalesman();
+								minValue = list.get(min).getSalesman();
+								break;
+							case "Order Total Price":
+								value = list.get(j).getOrderTotalPrice() + "";
+								minValue = list.get(min).getOrderTotalPrice() + "";
+								break;
+							}
+						
+						if(numerical) {
+							if(Double.parseDouble(value) < (Double.parseDouble(minValue))) {
+								min = j;
+							}
+							
+						}else {
+						
+							if(value.compareToIgnoreCase(minValue) < 0) {
+								min = j;
+							}
+						}
+					}
+					
+					if(min != i) {
+						Order temp = list.get(min);
+						list.set(min, list.get(i));
+						list.set(i, temp);
+						
+						
+					}
+					
+				}
+				
+				//long endTime = System.currentTimeMillis();
+				//executionTime = endTime-startTime;
+			}
 		 
 		  /**
 		   * This method clears all text fields when called upon
@@ -1419,7 +1554,6 @@ public class CustomerSalesOrderView {
 		 
 		 public String calculateTotalPrice() {
 			 double total = 0;
-			 
 			 
 				 for(int i = 0; i < orderProductsTable.getRowCount(); i++) {
 					 String value = (String) orderProductsTable.getValueAt(i, 4);
