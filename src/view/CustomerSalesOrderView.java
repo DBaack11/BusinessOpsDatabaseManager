@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import model.Customer;
+import model.Order;
 import model.Product;
 
 import javax.swing.JTextField;
@@ -57,6 +58,8 @@ public class CustomerSalesOrderView {
 	
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private ArrayList<Product> productList = new ArrayList<Product>();
+	private ArrayList<Order> orderList = new ArrayList<Order>();
+	private ArrayList<Product> orderProducts = new ArrayList<Product>();
 	private JTextField orderNameInput;
 	private JTextField salesmanInput;
 	private JTable ordersTable;
@@ -534,8 +537,10 @@ public class CustomerSalesOrderView {
 		JScrollPane orderScrollPane = new JScrollPane();
 		
 		JComboBox orderCustomerComboBox = new JComboBox();
+		orderCustomerComboBox.addItem(null);
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox orderProductComboBox = new JComboBox();
+		orderProductComboBox.addItem(null);
 		
 		JLabel orderProductsQuantityLabel = new JLabel("Quantity:");
 		orderProductsQuantityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -567,10 +572,6 @@ public class CustomerSalesOrderView {
 		JLabel ordersTableLabel = new JLabel("Orders");
 		
 		JLabel orderProductsTableLabel = new JLabel("Order Products ");
-		
-		JSeparator separator = new JSeparator();
-		separator.setBackground(Color.BLACK);
-		separator.setForeground(Color.BLACK);
 		GroupLayout gl_orders = new GroupLayout(orders);
 		gl_orders.setHorizontalGroup(
 			gl_orders.createParallelGroup(Alignment.LEADING)
@@ -578,30 +579,26 @@ public class CustomerSalesOrderView {
 					.addGap(24)
 					.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_orders.createSequentialGroup()
-							.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_orders.createSequentialGroup()
-									.addGap(229)
-									.addComponent(orderReturnHomeButton, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_orders.createSequentialGroup()
-									.addComponent(orderScrollPane, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)))
-							.addGap(26))
+							.addGap(229)
+							.addComponent(orderReturnHomeButton, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_orders.createSequentialGroup()
+							.addComponent(orderScrollPane, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_orders.createSequentialGroup()
 							.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_orders.createParallelGroup(Alignment.LEADING, false)
 									.addGroup(gl_orders.createSequentialGroup()
-										.addGap(13)
 										.addGroup(gl_orders.createParallelGroup(Alignment.TRAILING)
+											.addComponent(orderProductsLabel)
 											.addComponent(orderCustomerLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-											.addComponent(salesmanLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-											.addComponent(orderProductsLabel))
+											.addComponent(salesmanLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
 										.addPreferredGap(ComponentPlacement.RELATED)
-										.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
-											.addComponent(salesmanInput)
+										.addGroup(gl_orders.createParallelGroup(Alignment.TRAILING)
+											.addComponent(salesmanInput, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
 											.addComponent(orderCustomerComboBox, 0, 193, Short.MAX_VALUE)
 											.addGroup(gl_orders.createSequentialGroup()
-												.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
+												.addComponent(orderProductComboBox, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
 												.addPreferredGap(ComponentPlacement.RELATED)
 												.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))))
 									.addGroup(gl_orders.createSequentialGroup()
@@ -622,7 +619,8 @@ public class CustomerSalesOrderView {
 								.addGroup(gl_orders.createSequentialGroup()
 									.addComponent(orderDeleteButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(orderClearButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))))))
+									.addComponent(orderClearButton, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)))))
+					.addGap(26))
 				.addGroup(gl_orders.createSequentialGroup()
 					.addGap(61)
 					.addComponent(sortByLabel_2, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
@@ -640,7 +638,6 @@ public class CustomerSalesOrderView {
 					.addPreferredGap(ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
 					.addComponent(orderProductsTableLabel)
 					.addGap(94))
-				.addComponent(separator, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
 		);
 		gl_orders.setVerticalGroup(
 			gl_orders.createParallelGroup(Alignment.TRAILING)
@@ -659,7 +656,7 @@ public class CustomerSalesOrderView {
 								.addGroup(gl_orders.createSequentialGroup()
 									.addGap(13)
 									.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
-										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(orderProductComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 										.addComponent(orderProductsLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
@@ -667,11 +664,7 @@ public class CustomerSalesOrderView {
 										.addComponent(orderProductsQuantityInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
 								.addGroup(gl_orders.createSequentialGroup()
 									.addGap(18)
-									.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)))
-							.addGap(22)
-							.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
-								.addComponent(salesmanLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-								.addComponent(salesmanInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_orders.createSequentialGroup()
 							.addGap(67)
 							.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
@@ -681,9 +674,11 @@ public class CustomerSalesOrderView {
 							.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
 								.addComponent(orderClearButton, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
 								.addComponent(orderDeleteButton, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))))
-					.addGap(12)
-					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_orders.createParallelGroup(Alignment.BASELINE)
+						.addComponent(salesmanInput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(salesmanLabel, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+					.addGap(57)
 					.addGroup(gl_orders.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_orders.createSequentialGroup()
 							.addGap(4)
@@ -704,7 +699,7 @@ public class CustomerSalesOrderView {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(orderReturnHomeButton))
 						.addComponent(orderProductsScrollPane, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(70, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
 		orderProductsTable = new JTable();
@@ -713,6 +708,18 @@ public class CustomerSalesOrderView {
 		ordersTable = new JTable();
 		orderScrollPane.setViewportView(ordersTable);
 		orders.setLayout(gl_orders);
+		
+		DefaultTableModel ordersModel = new DefaultTableModel();
+		String[] orderColumnHeaders = {"Order Name", "Customer", "Products Ordered", "Order Total Price", "Salesman",};
+		String[] orderRow = new String[5];
+		ordersModel.setColumnIdentifiers(orderColumnHeaders);
+		ordersTable.setModel(ordersModel);
+		
+		DefaultTableModel orderProductsModel = new DefaultTableModel();
+		String[] orderProductColumnHeaders = {"Product ID", "Product", "Unit Price", "Quantity", "Product Total Price"};
+		String[] orderProductRow = new String[5];
+		orderProductsModel.setColumnIdentifiers(orderProductColumnHeaders);
+		orderProductsTable.setModel(orderProductsModel);
 		
 		DefaultCellEditor customerEditor = (DefaultCellEditor) customersTable.getDefaultEditor(Object.class);
 		customerEditor.setClickCountToStart(50);
@@ -793,6 +800,23 @@ public class CustomerSalesOrderView {
 			}
 		});
 		
+		ordersTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = ordersTable.getSelectedRow();
+				orderNameInput.setText(ordersModel.getValueAt(row, 0).toString());
+				orderCustomerComboBox.setSelectedItem(ordersModel.getValueAt(row, 1));
+				salesmanInput.setText(ordersModel.getValueAt(row, 4).toString());
+			}
+		});
+		
+		orderProductsTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = orderProductsTable.getSelectedRow();
+			}
+		});
+		
 		
 		/**
 		 * ActionListeners for ADD buttons
@@ -833,6 +857,8 @@ public class CustomerSalesOrderView {
 					Customer customer = new Customer(firstName, lastName, phoneNumber, email);
 					customerList.add(customer);
 					
+					orderCustomerComboBox.addItem(customer);
+					
 					clear();
 				}
 				
@@ -869,11 +895,53 @@ public class CustomerSalesOrderView {
 					Product product = new Product(productID, productName, Double.parseDouble(unitPrice));
 					productList.add(product);
 					
+					orderProductComboBox.addItem(product);
+					
 					clear();
 				}
 				
 			}
 		});
+		
+		orderAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int orderComplete = 1;
+				
+				String orderName = orderNameInput.getText().trim();
+				Customer customer = ((Customer)orderCustomerComboBox.getSelectedItem());
+				String customerString = customer.getFirstName() + " " + customer.getLastName();
+				String numProducts = orderProductsTable.getRowCount() + " Products";
+				double orderTotalPrice = calculateTotalPrice();
+				String salesman = salesmanInput.getText().trim();
+					
+				if(orderName.equals("") || orderCustomerComboBox.getSelectedIndex() < 0 || orderProductsTable.getRowCount() == 0 || salesman.equals("")) {
+						JOptionPane.showMessageDialog(null, "Please Complete All Fields");
+						
+					}else {	
+						
+						orderComplete = JOptionPane.showConfirmDialog(null, "Have you selected all of the products you want to order?", "WARNING", orderComplete);
+						if(orderComplete == JOptionPane.YES_OPTION) {	
+					
+							orderRow[0] = orderName;
+							orderRow[1] = customerString;
+							orderRow[2] = numProducts;
+							orderRow[3] = "$" + orderTotalPrice;
+							orderRow[4] = salesman;
+							
+							ordersModel.addRow(orderRow);
+							
+							JOptionPane.showMessageDialog(null, "Data Successfully Added");
+							
+							Order order = new Order(orderName, customer, orderProducts, orderTotalPrice, salesman);
+							orderList.add(order);
+							
+							clear();
+					}
+				} 
+				
+			}
+		});
+		
 		
 		
 		/**
@@ -1225,5 +1293,15 @@ public class CustomerSalesOrderView {
 				 list.add(stack.peek());
 				 stack.pop();
 			 }
+		 }
+		 
+		 public double calculateTotalPrice() {
+			 double total = 0;
+			 
+			 for(int i = 0; i < orderProductsTable.getRowCount(); i++) {
+				 total += Double.parseDouble((String)orderProductsTable.getValueAt(i, 4));
+			 }
+			 
+			 return total;
 		 }
 }

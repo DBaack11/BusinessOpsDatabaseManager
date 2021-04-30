@@ -60,7 +60,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer [firstName=" + firstName + ", lastName=" + lastName + ", phoneNum=" + phoneNum + ", email=" + email + "]";
+		return this.getFirstName() + " " + this.getLastName() + " - " + this.getPhoneNum() + " - " + this.getEmail();
 	}
 	
 }

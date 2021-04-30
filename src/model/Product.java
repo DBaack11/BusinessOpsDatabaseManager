@@ -76,8 +76,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [productID=" + productID + ", unitPrice=" + unitPrice + ", productName=" + productName
-				+ ", quantity=" + quantity + ", productTotalPrice=" + productTotalPrice + "]";
+		return "Product " + this.getProductID() + " - " + this.getProductName() + " - $" + this.getUnitPrice();
 	}
 	
 	
