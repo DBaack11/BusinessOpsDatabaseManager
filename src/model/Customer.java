@@ -25,7 +25,7 @@ public class Customer {
 		this.setPhoneNum(phoneNum);
 		this.setAddress(email);
 	}
-
+	
 	public String getFirstName() {
 		return firstName;
 	}
