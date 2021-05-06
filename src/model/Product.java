@@ -1,6 +1,23 @@
-/**
+/***************************************************************
+ * Name : Product.java
+ * Author: Devin Baack 
+ * Created : 05/5/2021
+ * Course: CIS 152 - Data Structures 
+ * Version: 10.15.7 
+ * OS: macOS Catalina 
+ * IDE: Eclipse 2020-12
+ * Copyright : This is my own original work based on specifications 
+ * issued by our instructor 
+ * Description : This program represents a Product POJO.
+ * Academic Honesty: I attest that this is my original work. I have
+ * not used unauthorized source code, either modified or unmodified. 
+ * I have not given other fellow student(s) access to my program.
+ ***************************************************************
+ * 
+ * 
  * 
  */
+
 package model;
 
 /**

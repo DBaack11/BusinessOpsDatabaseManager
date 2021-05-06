@@ -1,6 +1,24 @@
-/**
+/***************************************************************
+ * Name : CustomerSalesOrderView.java
+ * Author: Devin Baack 
+ * Created : 05/5/2021
+ * Course: CIS 152 - Data Structures 
+ * Version: 10.15.7 
+ * OS: macOS Catalina 
+ * IDE: Eclipse 2020-12
+ * Copyright : This is my own original work based on specifications 
+ * issued by our instructor 
+ * Description : This program is responsible for the creation of the 
+ * 				 GUI and all of the implementation of the existing components.
+ * Academic Honesty: I attest that this is my original work. I have
+ * not used unauthorized source code, either modified or unmodified. 
+ * I have not given other fellow student(s) access to my program.
+ ***************************************************************
+ * 
+ * 
  * 
  */
+
 package view;
 
 import java.awt.EventQueue;
@@ -47,6 +65,7 @@ import javax.swing.JSeparator;
  */
 public class CustomerSalesOrderView {
 
+	// The declared variables below represent the input components and JTables for the panels
 	private JFrame frame;
 	private JTextField firstNameInput;
 	private JTextField lastNameInput;
@@ -57,16 +76,18 @@ public class CustomerSalesOrderView {
 	private JTextField productIDInput;
 	private JTextField unitPriceInput;
 	private JTable productsTable;
-	
-	private ArrayList<Customer> customerList = new ArrayList<Customer>();
-	private ArrayList<Product> productList = new ArrayList<Product>();
-	private ArrayList<Order> orderList = new ArrayList<Order>();
 	private JTextField orderNameInput;
 	private JTextField salesmanInput;
-	private ArrayList<Product> temp = new ArrayList<Product>();
 	private JTable ordersTable;
 	private JTextField orderProductsQuantityInput;
 	private JTable orderProductsTable;
+	
+	// The declared variables below represent the ArrayList data structures used for storing the existing Customers, Products, and Orders
+	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private ArrayList<Product> productList = new ArrayList<Product>();
+	private ArrayList<Order> orderList = new ArrayList<Order>();
+	private ArrayList<Product> temp = new ArrayList<Product>();
+	
 	DecimalFormat df = new DecimalFormat("##.##");
 
 	/**
@@ -96,11 +117,17 @@ public class CustomerSalesOrderView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// This chunk of code is responsible for creating the frame that the components will be added to
 		frame = new JFrame();
 		frame.setBounds(100, 100, 700, 543);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
+
+// ##################################################################################################################################################
+// ################################################################ HOME PANEL ######################################################################
+// ##################################################################################################################################################
 		
+		// This chunk of code is responsible for creating the JPanel for the Home page and all of the components added
 		JPanel home = new JPanel();
 		home.setBackground(Color.GRAY);
 		frame.getContentPane().add(home, "name_44420704456063");
@@ -138,10 +165,11 @@ public class CustomerSalesOrderView {
 		);
 		home.setLayout(gl_home);
 		
-		// ##################################################################################################################################################
-		// ################################################################ CUSTOMERS PANEL #################################################################
-		// ##################################################################################################################################################
-		
+// ##################################################################################################################################################
+// ################################################################ CUSTOMERS PANEL #################################################################
+// ##################################################################################################################################################
+
+		// This chunk of code is responsible for creating the JPanel for the Customers page and all of the components added
 		JPanel customers = new JPanel();
 		customers.setBackground(Color.GRAY);
 		frame.getContentPane().add(customers, "name_47836099236270");
@@ -212,6 +240,10 @@ public class CustomerSalesOrderView {
 		
 		customerReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		GroupLayout gl_customers = new GroupLayout(customers);
+		
+// ##################################################################################################################################################
+// ################################################################# GENERATED CODE #################################################################
+// ##################################################################################################################################################		
 		gl_customers.setHorizontalGroup(
 			gl_customers.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_customers.createSequentialGroup()
@@ -314,6 +346,9 @@ public class CustomerSalesOrderView {
 					.addContainerGap())
 		);
 		
+// ##################################################################################################################################################
+// ##################################################################################################################################################		
+		
 		customersTable = new JTable();
 		customersTable.setGridColor(Color.BLACK);
 		customersTable.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
@@ -327,11 +362,11 @@ public class CustomerSalesOrderView {
 		customersTable.setModel(customersModel);
 		
 		
-		// ##################################################################################################################################################
-		// ################################################################# PRODUCTS PANEL #################################################################
-		// ##################################################################################################################################################
-		
-		
+// ##################################################################################################################################################
+// ################################################################# PRODUCTS PANEL #################################################################
+// ##################################################################################################################################################
+
+		// This chunk of code is responsible for creating the JPanel for the Products page and all of the components added
 		JPanel products = new JPanel();
 		products.setBackground(Color.GRAY);
 		frame.getContentPane().add(products, "name_101112397770335");
@@ -387,6 +422,11 @@ public class CustomerSalesOrderView {
 		
 		JScrollPane productScrollPane = new JScrollPane();
 		GroupLayout gl_products = new GroupLayout(products);
+		
+// ##################################################################################################################################################
+// ################################################################# GENERATED CODE #################################################################
+// ##################################################################################################################################################		
+
 		gl_products.setHorizontalGroup(
 			gl_products.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_products.createSequentialGroup()
@@ -496,7 +536,10 @@ public class CustomerSalesOrderView {
 					.addComponent(productReturnHomeButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(11))
 		);
-		
+
+// ##################################################################################################################################################
+// ##################################################################################################################################################
+
 		productsTable = new JTable();
 		productsTable.setGridColor(Color.BLACK);
 		productsTable.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
@@ -510,10 +553,11 @@ public class CustomerSalesOrderView {
 		productsTable.setModel(productsModel);
 		
 		
-		// ##################################################################################################################################################
-		// ################################################################# ORDERS PANEL ###################################################################
-		// ##################################################################################################################################################
-				
+// ##################################################################################################################################################
+// ################################################################# ORDERS PANEL ###################################################################
+// ##################################################################################################################################################
+		
+		// This chunk of code is responsible for creating the JPanel for the Orders page and all of the components added
 		JPanel orders = new JPanel();
 		orders.setBackground(Color.GRAY);
 		frame.getContentPane().add(orders, "name_1145650434335");
@@ -593,6 +637,11 @@ public class CustomerSalesOrderView {
 		
 		JLabel orderProductsTableLabel = new JLabel("Order Products ");
 		GroupLayout gl_orders = new GroupLayout(orders);
+		
+// ##################################################################################################################################################
+// ################################################################# GENERATED CODE #################################################################
+// ##################################################################################################################################################
+		
 		gl_orders.setHorizontalGroup(
 			gl_orders.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_orders.createSequentialGroup()
@@ -728,6 +777,8 @@ public class CustomerSalesOrderView {
 					.addComponent(orderReturnHomeButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(13))
 		);
+// ##################################################################################################################################################
+// ##################################################################################################################################################
 		
 		orderProductsTable = new JTable();
 		orderProductsScrollPane.setViewportView(orderProductsTable);
@@ -754,10 +805,10 @@ public class CustomerSalesOrderView {
 		productEditor.setClickCountToStart(50);
 		
 		
-		// ################################################################################################################################################## 
-		// ######################################################## BUTTON ACTION LISTENERS ################################################################# 
-		// ################################################################################################################################################## 
-		
+// ################################################################################################################################################## 
+// ######################################################## BUTTON ACTION LISTENERS ################################################################# 
+// ################################################################################################################################################## 
+
 		/**
 		 * ActionListeners for navigating the different panels through the home page buttons and return home buttons.
 		 * 
@@ -1585,7 +1636,7 @@ public class CustomerSalesOrderView {
 		  * to a stack and then popping each stack element back into the emptied list
 		  * @param list - ArrayList parameter representing the collection of objects to be reversed
 		  */
-		 public void reverse(ArrayList list) {
+		 public static void reverse(ArrayList list) {
 			 Stack<Object> stack = new Stack<Object>();
 			 while(!list.isEmpty()) {
 				 stack.add(list.get(0));
