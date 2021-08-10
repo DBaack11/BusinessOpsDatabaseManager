@@ -89,6 +89,7 @@ public class CustomerSalesOrderView {
 	private ArrayList<Product> temp = new ArrayList<Product>();
 	
 	DecimalFormat df = new DecimalFormat("##.##");
+	private JTextField hiddenTextField;
 
 	/**
 	 * Launch the application.
@@ -239,11 +240,11 @@ public class CustomerSalesOrderView {
 		JButton customerReturnHomeButton = new JButton("RETURN HOME");
 		
 		customerReturnHomeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		GroupLayout gl_customers = new GroupLayout(customers);
 		
-// ##################################################################################################################################################
-// ################################################################# GENERATED CODE #################################################################
-// ##################################################################################################################################################		
+		hiddenTextField = new JTextField();
+		hiddenTextField.setColumns(10);
+		hiddenTextField.setVisible(false);
+		GroupLayout gl_customers = new GroupLayout(customers);
 		gl_customers.setHorizontalGroup(
 			gl_customers.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_customers.createSequentialGroup()
@@ -265,10 +266,8 @@ public class CustomerSalesOrderView {
 							.addComponent(customerReturnHomeButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addGap(271))
 						.addGroup(gl_customers.createSequentialGroup()
-							.addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(emailInput, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-							.addGap(340))
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+							.addGap(52))
 						.addGroup(gl_customers.createSequentialGroup()
 							.addGroup(gl_customers.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_customers.createSequentialGroup()
@@ -282,19 +281,25 @@ public class CustomerSalesOrderView {
 								.addGroup(gl_customers.createSequentialGroup()
 									.addComponent(phoneNumberLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(phoneNumberInput, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)))
+									.addComponent(phoneNumberInput, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))
+								.addGroup(gl_customers.createSequentialGroup()
+									.addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(emailInput, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)))
 							.addGap(45)
 							.addGroup(gl_customers.createParallelGroup(Alignment.LEADING)
-								.addComponent(customerAddButton, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-								.addComponent(customerDeleteButton, GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE))
-							.addGap(18)
-							.addGroup(gl_customers.createParallelGroup(Alignment.LEADING)
-								.addComponent(customerClearButton, GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE)
-								.addComponent(customerUpdateButton, GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE))
-							.addGap(67))
-						.addGroup(gl_customers.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
-							.addGap(52)))
+								.addGroup(gl_customers.createSequentialGroup()
+									.addComponent(hiddenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addGap(165))
+								.addGroup(gl_customers.createSequentialGroup()
+									.addGroup(gl_customers.createParallelGroup(Alignment.LEADING)
+										.addComponent(customerAddButton, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+										.addComponent(customerDeleteButton, GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE))
+									.addGap(18)
+									.addGroup(gl_customers.createParallelGroup(Alignment.LEADING)
+										.addComponent(customerClearButton, GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE)
+										.addComponent(customerUpdateButton, GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE))
+									.addGap(67)))))
 					.addGap(0))
 		);
 		gl_customers.setVerticalGroup(
@@ -329,7 +334,9 @@ public class CustomerSalesOrderView {
 									.addComponent(customerAddButton, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
 									.addGap(32)
 									.addComponent(customerDeleteButton, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)))
-							.addGap(45)))
+							.addGap(18)
+							.addComponent(hiddenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(1)))
 					.addGap(63)
 					.addGroup(gl_customers.createParallelGroup(Alignment.BASELINE)
 						.addGroup(gl_customers.createSequentialGroup()
